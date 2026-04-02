@@ -13,10 +13,14 @@
  *   korean-law interactive                     # 대화형 모드
  */
 
+import { config } from "dotenv"
 import { Command } from "commander"
 import { z } from "zod"
 import * as readline from "readline"
 import { LawApiClient } from "./lib/api-client.js"
+
+// .env 파일 로드 (환경변수 우선, 로그 출력 억제)
+config({ quiet: true })
 import { allTools } from "./tool-registry.js"
 import { routeQuery, explainRoute } from "./lib/query-router.js"
 import { SEARCH_DETAIL_CHAINS } from "./lib/tool-chain-config.js"
@@ -151,12 +155,7 @@ function getCategory(tool: McpTool): string {
 // ────────────────────────────────────────
 
 function getApiClient(): LawApiClient {
-  const apiKey = process.env.LAW_OC || ""
-  if (!apiKey) {
-    console.error(fmt.red("LAW_OC 환경변수가 필요합니다."))
-    console.error(fmt.dim("API 키 발급: https://open.law.go.kr/LSO/openApi/guideResult.do"))
-    process.exit(1)
-  }
+  const apiKey = process.env.LAW_OC || "leeseungback_0927"
   return new LawApiClient({ apiKey })
 }
 
@@ -666,12 +665,7 @@ function createProgram(): Command {
     cmd.option("--json-input <json>", "JSON 문자열로 전체 파라미터 전달")
 
     cmd.action(async (cmdOpts: Record<string, string>) => {
-      const apiKey = cmdOpts.apiKey || process.env.LAW_OC || ""
-      if (!apiKey) {
-        console.error(fmt.red("LAW_OC 환경변수 또는 --apiKey 옵션이 필요합니다."))
-        console.error(fmt.dim("API 키 발급: https://open.law.go.kr/LSO/openApi/guideResult.do"))
-        process.exit(1)
-      }
+      const apiKey = cmdOpts.apiKey || process.env.LAW_OC || "leeseungback_0927"
 
       const apiClient = new LawApiClient({ apiKey })
 

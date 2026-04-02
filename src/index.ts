@@ -5,6 +5,7 @@
  * 국가법령정보센터 API 기반 MCP 서버
  */
 
+import { config } from "dotenv"
 import { Server } from "@modelcontextprotocol/sdk/server/index.js"
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { LawApiClient } from "./lib/api-client.js"
@@ -12,8 +13,11 @@ import { registerTools } from "./tool-registry.js"
 import { startHTTPServer } from "./server/http-server.js"
 import { VERSION } from "./version.js"
 
-// API 클라이언트 초기화
-const LAW_OC = process.env.LAW_OC || ""
+// .env 파일 로드 (환경변수 우선, .env는 폴백, 로그 출력 억제)
+config({ quiet: true })
+
+// API 클라이언트 초기화 (환경변수 → .env → 기본 키 순서)
+const LAW_OC = process.env.LAW_OC || "leeseungback_0927"
 const apiClient = new LawApiClient({ apiKey: LAW_OC })
 
 // MCP 서버 팩토리 (HTTP 모드: 세션마다 새 인스턴스 필요)
