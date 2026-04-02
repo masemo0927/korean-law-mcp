@@ -340,6 +340,26 @@ const routePatterns: Pattern[] = [
     priority: 17,
   },
 
+  // ── 17-1. 포괄적 법령 검토 (공사·교체·설치 작업) ──
+  {
+    name: "legal_review",
+    patterns: [
+      /법령\s*검토|법적\s*검토|관련\s*법령\s*전체|법령\s*체크리스트/,
+      /공사.*법령|설치.*법령|교체.*법령|작업.*법령/,
+      /산업안전.*검토|중대재해.*검토|안전.*법령.*검토/,
+    ],
+    tool: "chain_legal_review",
+    extract: (query) => {
+      // 지역명 추출 (extraKeywords로 전달)
+      const regionMatch = query.match(/(세종|서울|부산|대구|인천|광주|대전|울산|경기|강원|충북|충남|전북|전남|경북|경남|제주)/)
+      const extraKeywords: string[] = []
+      if (regionMatch) extraKeywords.push(regionMatch[0])
+      return { query, extraKeywords }
+    },
+    reason: "법령 검토/공사 안전 키워드 → 포괄적 법령검토 체인",
+    priority: 12,
+  },
+
   // ── 18. "방법" 단독 — procedure 폴백 ──
   {
     name: "method_fallback",

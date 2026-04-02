@@ -58,6 +58,7 @@ import {
   chainFullResearch, chainFullResearchSchema,
   chainProcedureDetail, chainProcedureDetailSchema,
 } from "./tools/chains.js"
+import { chainLegalReview, chainLegalReviewSchema } from "./tools/legal-review.js"
 
 /**
  * 모든 MCP 도구 정의
@@ -477,6 +478,12 @@ export const allTools: McpTool[] = [
     description: "[⛓체인] 절차/비용. 법령→3단비교→별표/서식 자동 연쇄. 신청/절차 질문 시.",
     schema: chainProcedureDetailSchema,
     handler: chainProcedureDetail
+  },
+  {
+    name: "chain_legal_review",
+    description: "[⛓체인] 포괄적 법령 검토. 공사/설치/교체/작업 시 관련 법률·시행령·시행규칙·고시·훈령·예규·판례·해석례를 전 계층 누락 없이 자동 탐색. 산업안전보건법 계열 포함. 도메인별 크로스매핑 적용.",
+    schema: chainLegalReviewSchema,
+    handler: chainLegalReview
   },
 ]
 
